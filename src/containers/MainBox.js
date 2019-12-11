@@ -1,9 +1,28 @@
 import React from 'react'
 import MenuBar from '../components/MenuBar.js'
 import { Profile, Photos, Cocktails, Pokemon} from '../components/Pages.js'
+import { cocktails } from '../data.js'
 
 class MainBox extends React.Component {
 
+  state = {
+    selectedItem: ""
+  }
+
+  handleSelect = (e) => {
+    e.persist()
+    // console.log(e.target.parentNode.querySelectorAll("a"))
+    // e.target.parentNode.querySelectorAll("a").forEach(function(a){
+    //   a.className = "item"
+    // })
+
+    if (e.target.tagName.toLowerCase() === "a"){
+      this.setState({selectedItem: e.target.id})
+    }
+    else if (e.target.tagName.toLowerCase() === "i"){
+      this.setState({selectedItem: e.target.id})
+    }
+  }
 
   render() {
 
@@ -13,12 +32,37 @@ class MainBox extends React.Component {
 
     */
 
-    const detailsToDisplay = <div>Hi, I'm a div!</div>
+  // const detailsToDisplay = <div><this.state.selectedItem/></div>
+  
+  let detailsToDisplay
+  switch(this.state.selectedItem) {
+      case "photo":
+        detailsToDisplay = <Photos/>
+        break;
+
+      case "profile":
+        detailsToDisplay = <Profile/>
+        break;
+
+      case "pokemon":
+        detailsToDisplay = <Pokemon/>
+        break;
+
+      case "cocktail":
+        detailsToDisplay = <Cocktails/>
+        break;
+
+      default:
+        detailsToDisplay = <div/>
+        break;
+    }
+  
 
     return (
       <div>
-        <MenuBar />
+        <MenuBar selectedItem={this.state.selectedItem} handleSelect={this.handleSelect} />
         {detailsToDisplay}
+
       </div>
     )
   }
